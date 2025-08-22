@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int compare(const void *a, const void *b) {
+    return (*(int*)a - *(int*)b);
+}
+
+int toys(int w[], int n) {
+    qsort(w, n, sizeof(int), compare);
+    int containers = 0, i = 0;
+    while (i < n) {
+        int limit = w[i] + 4;
+        containers++;
+        while (i < n && w[i] <= limit) i++;
+    }
+    return containers;
+}
+
+int main() {
+    int w[] = {1, 2, 3, 21, 7, 12, 14, 21};
+    int n = sizeof(w) / sizeof(w[0]);
+    printf("%d\n", toys(w, n));
+    return 0;
+}
