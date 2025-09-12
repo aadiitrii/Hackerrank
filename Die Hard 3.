@@ -1,0 +1,15 @@
+import math
+import os
+import sys
+
+def solve(a, b, c):
+    return "YES" if c <= max(a, b) and c % math.gcd(a, b) == 0 else "NO"
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    t = int(input().strip())
+    for _ in range(t):
+        a, b, c = map(int, input().rstrip().split())
+        result = solve(a, b, c)
+        fptr.write(result + '\n')
+    fptr.close()
