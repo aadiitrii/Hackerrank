@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int compare(const void *a, const void *b) {
+    long long diff = *(long long *)a - *(long long *)b;
+    return (diff > 0) - (diff < 0);
+}
+
+char* organizingContainers(int** container, int n) {
+    long long rowSum[n], colSum[n];
+    memset(rowSum, 0, sizeof(rowSum));
+    memset(colSum, 0, sizeof(colSum));
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            rowSum[i] += container[i][j];
+            colSum[j] += container[i][j];
+        }
+    }
+
+    qsort(rowSum, n, sizeof(long long), compare);
+    qsort(colSum, n, sizeof(long long), compare);
+
+    for (int i = 0; i < n; i++) {
+        if (rowSum[i] != colSum[i]) {
+            return "Impossible";
+        }
+    }
+    return "Possible";
+}
+
+int main() {
+    int q;
+    scanf("%d", &q);
+
+    while (q--) {
+        int n;
+        scanf("%d", &n);
+
+        int** container = malloc(n * sizeof(int*));
+        for (int i = 0; i < n; i++) {
+            container[i] = malloc(n * sizeof(int));
+            for (int j = 0; j < n; j++) {
+                scanf("%d", &container[i][j]);
+            }
+        }
+
+        char* result = organizingContainers(container, n);
+        printf("%s\n", result);
+
+        for (int i = 0; i < n; i++) {
+            free(container[i]);
+        }
+        free(container);
+    }
+
+    return 0;
+}
