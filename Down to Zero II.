@@ -1,33 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
+#include <string.h>
 
 #define MAX 1000001
 
-int moves[MAX];
+int visited[MAX];
 
-void precompute() {
-    for (int i = 0; i < MAX; i++) moves[i] = INT_MAX;
-    moves[0] = 0;
-    for (int i = 1; i < MAX; i++) {
-        if (moves[i] > moves[i - 1] + 1) moves[i] = moves[i - 1] + 1;
-        for (int j = 2; j * j <= i; j++) {
-            if (i % j == 0) {
-                int a = j, b = i / j;
-                if (moves[i] > moves[a] + 1) moves[i] = moves[a] + 1;
-                if (moves[i] > moves[b] + 1) moves[i] = moves[b] + 1;
+int downToZero(int n) {
+    if (n == 0) return 0;
+    memset(visited, 0, sizeof(visited));
+    int queue[MAX], front = 0, rear = 0;
+    queue[rear++] = n;
+    visited[n] = 1;
+    while (front < rear) {
+        int current = queue[front++];
+        if (current == 0) return visited[0] - 1;
+        if (!visited[current - 1]) {
+            visited[current - 1] = visited[current] + 1;
+            queue[rear++] = current - 1;
+        }
+        for (int i = 2; i * i <= current; i++) {
+            if (current % i == 0) {
+                int maxFactor = current / i;
+                if (!visited[maxFactor]) {
+                    visited[maxFactor] = visited[current] + 1;
+                    queue[rear++] = maxFactor;
+                }
             }
         }
     }
+    return -1;
 }
 
 int main() {
-    precompute();
     int q, n;
     scanf("%d", &q);
     while (q--) {
         scanf("%d", &n);
-        printf("%d\n", moves[n]);
+        printf("%d\n", downToZero(n));
     }
     return 0;
 }
