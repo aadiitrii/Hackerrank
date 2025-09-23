@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+typedef struct {
+    long price;
+    int year;
+} PriceYear;
+int compare(const void *a, const void *b) {
+    long diff = ((PriceYear *)b)->price - ((PriceYear *)a)->price;
+    return (diff > 0) - (diff < 0);
+}
+int minimumLoss(long *prices, int n) {
+    PriceYear *arr = malloc(n * sizeof(PriceYear));
+    for (int i = 0; i < n; i++) {
+        arr[i].price = prices[i];
+        arr[i].year = i;
+    }
+    qsort(arr, n, sizeof(PriceYear), compare);
+    long minLoss = LONG_MAX;
+    for (int i = 0; i < n - 1; i++) {
+        if (arr[i].year < arr[i + 1].year) {
+            long loss = arr[i].price - arr[i + 1].price;
+            if (loss < minLoss) minLoss = loss;
+        }
+    }
+    free(arr);
+    return (int)minLoss;
+}
+int main() {
+    int n;
+    scanf("%d", &n);
+    long *prices = malloc(n * sizeof(long));
+    for (int i = 0; i < n; i++) scanf("%ld", &prices[i]);
+    int result = minimumLoss(prices, n);
+    printf("%d\n", result);
+    free(prices);
+    return 0;
+}
