@@ -1,0 +1,13 @@
+def sansaXor(arr):
+    n = len(arr)
+    if n % 2 == 0:
+        return 0
+    result = 0
+    for i in range(0, n, 2):
+        result ^= arr[i]
+    return result
+t = int(input())
+for _ in range(t):
+    n = int(input())
+    arr = list(map(int, input().split()))
+    print(sansaXor(arr))
