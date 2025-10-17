@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX_TICKETS 100000
+#define MAX_MASK 1024  
+int winningLotteryTicket(char tickets[][51], int n) {
+    int maskCount[MAX_MASK] = {0};
+    for (int i = 0; i < n; i++) {
+        int mask = 0;
+        for (int j = 0; tickets[i][j]; j++) {
+            mask |= 1 << (tickets[i][j] - '0');
+        }
+        maskCount[mask]++;
+    }
+    long long totalPairs = 0;
+    int fullMask = (1 << 10) - 1; 
+    for (int i = 0; i < MAX_MASK; i++) {
+        for (int j = i; j < MAX_MASK; j++) {
+            if ((i | j) == fullMask) {
+                if (i == j) {
+                    totalPairs += (long long)maskCount[i] * (maskCount[i] - 1) / 2;
+                } else {
+                    totalPairs += (long long)maskCount[i] * maskCount[j];
+                }
+            }
+        }
+    }
+    return (int)totalPairs;
+}
+int main() {
+    int n;
+    scanf("%d", &n);
+    char tickets[MAX_TICKETS][51];
+
+    for (int i = 0; i < n; i++) {
+        scanf("%s", tickets[i]);
+    }
+    int result = winningLotteryTicket(tickets, n);
+    printf("%d\n", result);
+    return 0;
+}
