@@ -1,0 +1,13 @@
+def kaprekarNumbers(p, q):
+    result = []
+    for i in range(p, q + 1):
+        d = len(str(i))
+        sq = str(i ** 2)
+        r = sq[-d:] if len(sq) >= d else sq
+        l = sq[:-d] if len(sq) > d else '0'
+        if int(l) + int(r) == i:
+            result.append(str(i))
+    if result:
+        print(" ".join(result))
+    else:
+        print("INVALID RANGE")
