@@ -1,0 +1,22 @@
+def lilysHomework(arr):
+    def count_swaps(target):
+        n = len(arr)
+        index_map = {v: i for i, v in enumerate(arr)}
+        visited = [False] * n
+        swaps = 0
+        for i in range(n):
+            if visited[i] or arr[i] == target[i]:
+                continue
+            cycle_size = 0
+            j = i
+            while not visited[j]:
+                visited[j] = True
+                j = index_map[target[j]]
+                cycle_size += 1
+            if cycle_size > 0:
+                swaps += cycle_size - 1
+        return swaps
+
+    sorted_arr = sorted(arr)
+    reversed_arr = sorted_arr[::-1]
+    return min(count_swaps(sorted_arr), count_swaps(reversed_arr))
