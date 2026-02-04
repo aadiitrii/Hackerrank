@@ -1,15 +1,11 @@
 #include <stdio.h>
-
 void minimumBribes(int q[], int n) {
     int bribes = 0;
     for (int i = 0; i < n; i++) {
-        // Check if person has moved more than 2 positions ahead
         if (q[i] - (i + 1) > 2) {
             printf("Too chaotic\n");
             return;
         }
-
-        // Count how many times this person was bribed
         for (int j = (q[i] - 2 > 0 ? q[i] - 2 : 0); j < i; j++) {
             if (q[j] > q[i]) {
                 bribes++;
@@ -18,7 +14,6 @@ void minimumBribes(int q[], int n) {
     }
     printf("%d\n", bribes);
 }
-
 int main() {
     int t;
     scanf("%d", &t);
@@ -33,3 +28,21 @@ int main() {
     }
     return 0;
 }
+
+
+
+
+
+
+PYTHON CODE:
+
+def minimumBribes(q):
+    bribes = 0
+    for i in range(len(q)):
+        if q[i]-(i+1)>2:
+            print ("Too chaotic")
+            return
+        for j in range (max(0,q[i]-2),i):
+            if q[j]>q[i]:
+                bribes+=1
+    print(bribes)
